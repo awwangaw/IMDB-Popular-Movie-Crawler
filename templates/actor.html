@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+   <body>
+    {% with messages = get_flashed_messages() %}  
+    {% if messages %}  
+          {% for message in messages %}  
+               <p>{{ message }}</p>  
+          {% endfor %}  
+    {% endif %}  
+ {% endwith %}
+      <h2 style = "text-align: center;">Check to see if two actors are in the same film</h2>
+
+      {% for message in form.actor1.errors %}
+      <div>{{ message }}</div>
+   {% endfor %}
+
+   {% for message in form.actor2.errors %}
+      <div>{{ message }}</div>
+   {% endfor %}
+
+      <form action = "http://localhost:5000/game" method = post>
+         <fieldset>
+            <legend>Actors Form</legend>
+            
+
+            <div style = font-size:20px; font-weight:bold; margin-left:150px;>
+               {{ form.actor1.label }}<br>
+               {{ form.actor1 }}
+               <br>
+
+               {{ form.actor2.label }}<br>
+               {{ form.actor2 }}
+               <br>
+
+               {{ form.submit }}
+            </div>
+
+         </fieldset>
+      </form>
+   </body>
+</html>
