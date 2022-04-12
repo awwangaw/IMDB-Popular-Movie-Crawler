@@ -311,6 +311,20 @@ def plot_genre():
 
     conn.close()
 
+# pie chart for count of movies that each actor has been in
+@app.route('/actors')
+def plot_actors_in_movies():
+    conn = sqlite3.connect(DATABASE_NAME)
+    cur = conn.cursor()
+
+    statement = '''
+        SELECT ActorName, count(*) FROM actors GROUP BY ActorName ORDERY BY ActorName;
+    '''
+
+    query_result = cur.execute(statement)
+    query_result = list(cur.fetchall())
+
+
 # line plot for number of movies released each month
 def plot_movies_each_month():
     conn = sqlite3.connect(DATABASE_NAME)

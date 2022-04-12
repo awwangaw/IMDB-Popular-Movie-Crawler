@@ -3,18 +3,29 @@
 <html>
 
    <head>
-      <title>HTML base Tag</title>
+      <title>IMDB Popular Movie Analysis</title>
       <base href = "http://127.0.0.1:5000/" />
    </head>
+
+   <div class="header">
+    <h1>IMDB Popular Movie Analysis</h1>
+    <p>Student: Amanda Wang</p>
+  </div>
 
    <body>
     <ul>
         <li><a href="/director">Click to view director count report</a></li>
+        <br>
         <li><a href="/genre">Click to view genre breakdown of popular movies</a></li>
+        <br>
         <li><a href="/month">Click to view number of popular movies released each month</a></li>
+        <br>
+        <li><a href="/year">Click to view number of popular movies released each year</a></li>
+        <br>
+        <li>
+            <a href="/game" style="background-color: #96bff5;border-radius: 3px; text-decoration: none;">&thinsp;<span style="text-decoration: underline;">Click to check whether two actors have acted in the same popular movie</span>&thinsp;</a>
+        </li>
     </ul>
-    <form>
-        <input type="button" value="Go back to list page" onclick="history.back()">
-    </form>
+
    </body>
 </html>

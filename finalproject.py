@@ -308,7 +308,7 @@ def plot_genre():
     fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
     fig.update_layout(
     title={
-        'text': "Pie Chart for Percentage of Popular Movies by Genre",
+        'text': "Percentage of Popular Movies by Genre",
         'y':0.9,
         'x':0.5,
         'xanchor': 'center',
@@ -341,25 +341,43 @@ def plot_movies_each_month():
     fig = go.Figure(data=go.Scatter(x=labels_month_name, y=values))
     fig.update_layout(
     title={
-        'text': "Line Plot for Number of Popular Movies Released Each Month",
+        'text': "Number of Popular Movies Released Each Month",
         'y':0.9,
         'x':0.5,
         'xanchor': 'center',
         'yanchor': 'top'})
     fig.show()
 
-# pie chart for count of movies that each actor has been in
-@app.route('/actors')
+# line chart for number of movies released each year
+@app.route('/year')
 def plot_actors_in_movies():
     conn = sqlite3.connect(DATABASE_NAME)
     cur = conn.cursor()
 
     statement = '''
-        select strftime('%m', PublishedDate) as Month, count(*) from movies group by Month order by Month ASC;
+        select strftime('%Y', PublishedDate) as Year, count(*) from movies group by Year order by Year;
     '''
 
     query_result = cur.execute(statement)
     query_result = list(cur.fetchall())
+
+    labels = []
+    values = []
+    for element in query_result:
+        labels.append(element[0])
+        values.append(element[1])
+
+    fig = go.Figure([go.Bar(x=labels, y=values, text=values, textposition='auto')])
+    fig.update_layout(
+    title={
+        'text': "Number of Popular Movies Released Per Year",
+        'y':0.9,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'})
+    fig.show()
+
+    conn.close()
 
 
 # Bar graph for director's who have released more than 1 movie and their average ranking of movies
@@ -390,7 +408,7 @@ def plot_director_count():
     fig = go.Figure([go.Bar(x=director_lst, y=rank_lst, text=rank_lst, textposition='auto')])
     fig.update_layout(
     title={
-        'text': "Bar Graph for Director's who have more than 1 Popular Movie and Their Movie's Average Ranking",
+        'text': "Directors who have more than 1 Popular Movie and Their Movie's Average Ranking",
         'y':0.9,
         'x':0.5,
         'xanchor': 'center',
@@ -435,11 +453,11 @@ def check_two_actors_in_same_movie():
             if shortest_path is not None:
                 degree = math.floor(len(shortest_path)/2)
                 if degree == 1:
-                    flash('The two actors have been in the same movie.')
+                    flash(shortest_path[0] + ' and ' + shortest_path[2] + ' have acted in the same popular movie: ' + str(shortest_path[1]))
                 else:
-                    flash('The two actors have not been in the same movie.')
+                    flash(shortest_path[0] + ' and ' + shortest_path[2] + ' have not acted in the same popular movie.')
             else:
-                flash('The two actors have not been in the same movie.')
+                flash(form.actor1.data + ' and ' + form.actor2.data + ' have not acted in the same popular movie.')
 
             return render_template('success.html')
     else:
