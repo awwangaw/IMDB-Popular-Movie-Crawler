@@ -23,7 +23,7 @@ MOVIE_CACHE = {} # key: URL, value: entire page
 POPULAR_FILMS_DICT = {} # key: movie, value: dictonary with additional movie information
 
 GRAPH = {} # graph of actors to movies and movies to actors
-
+GRAPH_JSON_FILE_NAME = 'graph.json'
 
 def generate_unique_key(url):
     return url
@@ -144,6 +144,12 @@ def constructing_graph_actor_to_movies():
 
     db_connection.commit()
     db_connection.close()
+
+def write_graph_to_json_file():
+    graph_content = json.dumps(GRAPH)
+    graph_file = open(GRAPH_JSON_FILE_NAME, 'w')
+    graph_file.write(graph_content)
+    graph_file.close()
 
 def find_shortest_path(graph, start, end):
         dist = {start: [start]}
@@ -475,6 +481,7 @@ if __name__=="__main__":
     load_actors()
     load_directors()
     constructing_graph_actor_to_movies()
+    write_graph_to_json_file()
     #print(GRAPH)
     #print(find_shortest_path(GRAPH, 'Nicole Kidman', 'Claes Bang'))
     app.run(debug=True)
